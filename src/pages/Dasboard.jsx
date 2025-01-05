@@ -1,4 +1,4 @@
-import { React,useState } from "react";
+import { useState } from "react";
 import {
   Container,
   Row,
@@ -43,10 +43,8 @@ function Dasboard() {
 
   return (
     <>
-      {/* NAVBAR NYA TOD*/}
       <NavBar/>
 
-      {/* ISI NYA TOD */}
       <Container>
         <header className="text-center my-4">
           <h2>Dashboard Pickup Requests</h2>

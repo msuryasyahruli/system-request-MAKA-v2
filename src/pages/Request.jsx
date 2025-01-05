@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Form, Row, Col, Button, Card } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavigationBar'
@@ -13,10 +12,8 @@ function Request() {
 
   return (
     <>
-      {/* NAVBAR NYA TOD*/}
       <NavBar/>
 
-      {/* ISI FORM TOD */}
       <Container>
         <h2 className="text-center mb-4">Request Pickup Part Import</h2>
         <Card className="shadow mx-auto" style={{ maxWidth: "600px" }}>
