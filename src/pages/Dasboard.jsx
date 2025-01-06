@@ -24,7 +24,7 @@ function Dashboard() {
       setLoading(true);
       try {
         const response = await axios.get(
-          "https://maka-system-request.vercel.app/pickup-request"
+          "https://maka-system-api-v1.vercel.app/pickup-request"
         );
         if (response.data.status === "success") {
           setData(response.data.data);

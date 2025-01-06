@@ -39,7 +39,7 @@ function Request() {
     }
 
     axios
-      .post("https://maka-system-request.vercel.app/pickup-request", formData, {
+      .post("https://maka-system-api-v1.vercel.app/pickup-request", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
