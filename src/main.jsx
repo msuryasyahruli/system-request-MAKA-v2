@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/system-request/dashboard" />} />
+        <Route path="/" element={<Navigate to="/request/pickup-part-import" />} />
         <Route path="/system-request/dashboard" element={<Dashboard />} />
         <Route path="/request/pickup-part-import" element={<Request />} />
       </Routes>

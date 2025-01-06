@@ -5,7 +5,7 @@ function NavigationBar() {
   return (
     <>
       <Navbar variant="dark" className="mb-4" style={{ background: "#21D1FA" }}>
-        <Container>
+        <Container fluid>
           <Navbar.Brand className="d-flex align-items-center">
             <img
               src={logo}

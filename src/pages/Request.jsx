@@ -24,6 +24,7 @@ function Request() {
       `${data.length}x${data.width}x${data.height}`
     );
     formData.append("weight", data.weight);
+    formData.append("total_cbm", data.total_cbm);
     formData.append("pickup_address", data.pickup_address);
     formData.append("destination_address", data.destination_address);
     formData.append("pickup_date", data.pickup_date);
@@ -155,13 +156,26 @@ function Request() {
                 <Form.Group controlId="weight" className="mb-3">
                   <Form.Label>Weight:</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="number"
                     {...register("weight", { required: "Weight is required" })}
                     placeholder="Enter weight"
                     isInvalid={!!errors.weight}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.weight?.message}
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group controlId="total_cbm" className="mb-3">
+                  <Form.Label>Total CBM:</Form.Label>
+                  <Form.Control
+                    type="number"
+                    {...register("total_cbm", { required: "Total CBM is required" })}
+                    placeholder="Enter total_cbm"
+                    isInvalid={!!errors.total_cbm}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.total_cbm?.message}
                   </Form.Control.Feedback>
                 </Form.Group>
 
