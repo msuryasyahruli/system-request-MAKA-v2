@@ -9,6 +9,10 @@ import {
   Pagination,
   Form,
   Modal,
+  OverlayTrigger,
+  Tooltip,
+  Dropdown,
+  DropdownButton,
 } from "react-bootstrap";
 import NavBar from "../components/NavigationBar";
 
@@ -16,22 +20,22 @@ function Dashboard() {
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false);
+  const [onClickDelete, setClickDelete] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
+        const res = await axios.get(
           "https://maka-system-api-v1.vercel.app/pickup-request"
         );
-        if (response.data.status === "success") {
-          setData(response.data.data);
-          setPagination(response.data.pagination);
+        if (res.data.status === "success") {
+          setData(res.data.data);
+          setPagination(res.data.pagination);
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } catch (err) {
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
@@ -42,19 +46,25 @@ function Dashboard() {
 
   const handleDelete = async (id) => {
     setSelectedId(id);
-    setShow(true);
+    setClickDelete(true);
   };
 
   const handleConfirmDelete = async (id) => {
     try {
-      const response = await axios.delete(
+      const res = await axios.delete(
         `https://maka-system-api-v1.vercel.app/pickup-request/${id}`
       );
-      alert(response.data.message);
-    } catch (error) {
-      console.error("Error deleting data:", error);
+      alert(res.data.message);
+    } catch (err) {
+      console.error("Error deleting data:", err);
     }
   };
+
+  const renderTooltip = (props, text) => (
+    <Tooltip id="tooltip" {...props}>
+      {text}
+    </Tooltip>
+  );
 
   return (
     <>
@@ -102,7 +112,9 @@ function Dashboard() {
           </thead>
           <tbody>
             {loading ? (
-              <td colSpan="16" className="text-center border">Loading...</td>
+              <td colSpan="16" className="text-center border">
+                Loading...
+              </td>
             ) : data.length > 0 ? (
               data.map((item, index) => (
                 <tr key={index}>
@@ -117,8 +129,28 @@ function Dashboard() {
                   <td>{item.dimensi_part}</td>
                   <td>{item.weight} kg</td>
                   <td>{item.total_cbm}</td>
-                  <td>{item.pickup_address}</td>
-                  <td className="text-truncate" style={{ maxWidth: 100 }}>{item.destination_address}</td>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 300 }}
+                    overlay={(props) =>
+                      renderTooltip(props, item.pickup_address)
+                    }
+                  >
+                    <td className="text-truncate" style={{ maxWidth: 100 }}>
+                      {item.pickup_address}
+                    </td>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 250, hide: 300 }}
+                    overlay={(props) =>
+                      renderTooltip(props, item.destination_address)
+                    }
+                  >
+                    <td className="text-truncate" style={{ maxWidth: 100 }}>
+                      {item.destination_address}
+                    </td>
+                  </OverlayTrigger>
                   <td>{item.supplier_name}</td>
                   <td>{item.requester_name}</td>
                   <td>{item.shipping_options}</td>
@@ -129,17 +161,14 @@ function Dashboard() {
                       Download
                     </Button>
                   </td>
-                  <td>
-                    {/* <Button variant="warning" size="sm">
-                      Update
-                    </Button> */}
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Delele
-                    </Button>
+                  <td className="text-center">
+                    <DropdownButton variant="secondary" size="sm" title="">
+                      <Dropdown.Item>Detail</Dropdown.Item>
+                      <Dropdown.Item>Update</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleDelete(item.id)}>
+                        Delete
+                      </Dropdown.Item>
+                    </DropdownButton>
                   </td>
                 </tr>
               ))
@@ -187,10 +216,11 @@ function Dashboard() {
       </Container>
 
       <Modal
-        show={show}
-        onHide={() => setShow(false)}
+        show={onClickDelete}
+        onHide={() => setClickDelete(false)}
         backdrop="static"
         keyboard={false}
+        centered
       >
         <Modal.Header closeButton>
           <Modal.Title>Delete request</Modal.Title>
@@ -199,7 +229,7 @@ function Dashboard() {
           Are you sure you wanna delete data request?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
+          <Button variant="secondary" onClick={() => setClickDelete(false)}>
             Close
           </Button>
           <Button
