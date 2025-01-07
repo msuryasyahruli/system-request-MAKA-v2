@@ -6,13 +6,13 @@ function NavigationBar() {
     <>
       <Navbar className="mb-4" style={{ background: "#21D1FA" }}>
         <Container fluid>
-          <Navbar.Brand className="d-flex align-items-center fw-bold">
+          <Navbar.Brand className="d-flex align-items-center fw-bold fs-4 py-0">
             <img
               src={logo}
               alt="logo"
-              height="40"
-              className="d-inline-block align-top"
-            />{' '}
+              height="50"
+              className="d-inline-block align-top me-1"
+            />
             Logistic
           </Navbar.Brand>
         </Container>

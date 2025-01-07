@@ -32,15 +32,15 @@ function Request() {
     formData.append("requester_name", data.requester_name);
     formData.append("shipping_options", data.shipping_options);
 
-    if (data.document_import && data.document_import[0]) {
-      formData.append("import_documents", data.document_import[0]);
+    if (data.import_documents && data.import_documents[0]) {
+      formData.append("import_documents", data.import_documents[0]);
     } else {
       alert("Please upload import documents.");
       return;
     }
 
     axios
-      .post("https://maka-system-api-v1.vercel.app/pickup-request", formData, {
+      .post(`https://maka-system-api-v1.vercel.app/pickup-request`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -50,6 +50,8 @@ function Request() {
           setOnSuccess(true);
           alert("Request submitted successfully!");
           reset();
+        } else {
+          alert(response.data.message);
         }
       })
       .catch((error) => {
@@ -170,7 +172,9 @@ function Request() {
                   <Form.Label>Total CBM:</Form.Label>
                   <Form.Control
                     type="number"
-                    {...register("total_cbm", { required: "Total CBM is required" })}
+                    {...register("total_cbm", {
+                      required: "Total CBM is required",
+                    })}
                     placeholder="Enter total_cbm"
                     isInvalid={!!errors.total_cbm}
                   />
@@ -259,11 +263,20 @@ function Request() {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group controlId="documentImport" className="mb-3">
+                <Form.Group controlId="importDocuments" className="mb-3">
                   <Form.Label>
                     Document import (Packing List, Commercial Invoice):
                   </Form.Label>
-                  <Form.Control type="text" {...register("document_import")} />
+                  <Form.Control
+                    type="file"
+                    {...register("import_documents", {
+                      required: "Document is required",
+                    })}
+                    isInvalid={!!errors.import_documents}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.import_documents?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group controlId="options" className="mb-4">
