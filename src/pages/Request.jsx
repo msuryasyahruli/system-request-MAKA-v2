@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import NavBar from "../components/NavigationBar";
 import { useState } from "react";
+import ToastAlert, { toast } from "../components/Toast";
 
 function Request() {
   const {
@@ -48,10 +49,10 @@ function Request() {
       .then((response) => {
         if (response.data.status === "success") {
           setOnSuccess(true);
-          alert("Request submitted successfully!");
+          toast({ message: "Request sent", title: "Success" });
           reset();
         } else {
-          alert(response.data.message);
+          toast({ message: response.data.message, title: "Warning" });
         }
       })
       .catch((error) => {
@@ -307,6 +308,8 @@ function Request() {
           <p>&copy; 2025 Maka Logistic</p>
         </footer>
       </Container>
+
+      <ToastAlert />
     </>
   );
 }

@@ -18,19 +18,22 @@ import {
 import NavBar from "../components/NavigationBar";
 import ModalDetail from "../components/Modals/ModalDetail";
 import ModalUpdate from "../components/Modals/ModalUpdate";
+import ToastAlert, { toast } from "../components/Toast";
 
 function Dashboard() {
   const [dataList, setDataList] = useState([]);
   const [pagination, setPagination] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [listDetail, setListDetail] = useState({});
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [onClickDetail, setClickDetail] = useState(false);
   const [onClickUpdate, setClickUpdate] = useState(false);
   const [onClickDelete, setClickDelete] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [refetchKey, setRefetchKey] = useState(0);
   const [option, setOption] = useState({
     page: 1,
+    search: "",
   });
 
   const handlePageChange = (page) => {
@@ -41,7 +44,6 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const res = await axios.get(
           `https://maka-system-api-v1.vercel.app/pickup-request`,
@@ -64,7 +66,7 @@ function Dashboard() {
     };
 
     fetchData();
-  }, [option]);
+  }, [option, refetchKey]);
 
   const handleDetail = async (id) => {
     setSelectedId(id);
@@ -83,22 +85,16 @@ function Dashboard() {
 
   const handleConfirmDelete = async (id) => {
     try {
-      const res = await axios.delete(
+      const response = await axios.delete(
         `https://maka-system-api-v1.vercel.app/pickup-request/${id}`
       );
-      alert(res.data.message);
+      toast({ message: response.data.message, title: "Success" });
       setClickDelete(false);
-      window.location.reload();
+      setRefetchKey((prev) => prev + 1);
     } catch (err) {
       console.error("Error deleting data:", err);
     }
   };
-
-  const renderTooltip = (props, text) => (
-    <Tooltip id="tooltip" {...props}>
-      {text}
-    </Tooltip>
-  );
 
   useEffect(() => {
     setLoadingDetail(true);
@@ -120,6 +116,12 @@ function Dashboard() {
     fetchData();
   }, [selectedId]);
 
+  const renderTooltip = (props, text) => (
+    <Tooltip id="tooltip" {...props}>
+      {text}
+    </Tooltip>
+  );
+
   return (
     <>
       <NavBar />
@@ -134,8 +136,10 @@ function Dashboard() {
               <Form.Control
                 type="text"
                 placeholder="Search..."
-                // value={searchQuery}
-                // onChange={handleSearch}
+                value={option.search}
+                onChange={(e) =>
+                  setOption((prev) => ({ ...prev, search: e.target.value }))
+                }
               />
             </Form.Group>
           </Col>
@@ -155,8 +159,8 @@ function Dashboard() {
                 <th>PO Number</th>
                 <th>Part Name</th>
                 <th>Quantity</th>
-                <th>Dimensions</th>
-                <th>Weight</th>
+                {/* <th>Dimensions</th>
+                <th>Weight</th> */}
                 <th>Total CBM</th>
                 <th>Pickup Address</th>
                 <th>Destination Address</th>
@@ -165,7 +169,8 @@ function Dashboard() {
                 <th>Shipping Options</th>
                 {/* <th>Request Date</th> */}
                 <th>Pickup Date</th>
-                <th>Documents PDF</th>
+                <th>Document Import</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -181,8 +186,8 @@ function Dashboard() {
                     <td>{item.po_number}</td>
                     <td>{item.part_name}</td>
                     <td>{item.quantity}</td>
-                    <td>{item.dimensi_part}</td>
-                    <td>{item.weight} kg</td>
+                    {/* <td>{item.dimensi_part}</td>
+                    <td>{item.weight} kg</td> */}
                     <td>{item.total_cbm}</td>
                     <OverlayTrigger
                       placement="right"
@@ -215,6 +220,12 @@ function Dashboard() {
                       <Button variant="link" size="sm">
                         {item.import_documents}
                       </Button>
+                    </td>
+                    <td className="text-truncate">
+                      {" "}
+                      <p className="bg-warning rounded-pill px-1 text-center">
+                        {item.shipment_status}
+                      </p>{" "}
                     </td>
                     <td className="text-center">
                       <DropdownButton
@@ -293,6 +304,7 @@ function Dashboard() {
         dataDetail={listDetail}
         loading={loadingDetail}
         id={selectedId}
+        onRefresh={(v) => setRefetchKey(v)}
       />
 
       <Modal
@@ -320,6 +332,8 @@ function Dashboard() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <ToastAlert />
     </>
   );
 }
