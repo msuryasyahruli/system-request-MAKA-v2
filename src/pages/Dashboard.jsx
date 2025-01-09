@@ -19,6 +19,7 @@ import NavBar from "../components/NavigationBar";
 import ModalDetail from "../components/Modals/ModalDetail";
 import ModalUpdate from "../components/Modals/ModalUpdate";
 import ToastAlert, { toast } from "../components/Toast";
+import Footer from "../components/Footer";
 
 function Dashboard() {
   const [dataList, setDataList] = useState([]);
@@ -159,8 +160,8 @@ function Dashboard() {
                 <th>PO Number</th>
                 <th>Part Name</th>
                 <th>Quantity</th>
-                {/* <th>Dimensions</th>
-                <th>Weight</th> */}
+                {/* <th>Dimensions</th> */}
+                {/* <th>Weight</th> */}
                 <th>Total CBM</th>
                 <th>Pickup Address</th>
                 <th>Destination Address</th>
@@ -186,31 +187,31 @@ function Dashboard() {
                     <td>{item.po_number}</td>
                     <td>{item.part_name}</td>
                     <td>{item.quantity}</td>
-                    {/* <td>{item.dimensi_part}</td>
-                    <td>{item.weight} kg</td> */}
+                    {/* <td>{item.dimensi_part}</td> */}
+                    {/* <td>{item.weight} kg</td> */}
                     <td>{item.total_cbm}</td>
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 250, hide: 300 }}
-                      overlay={(props) =>
-                        renderTooltip(props, item.pickup_address)
-                      }
-                    >
-                      <td className="text-truncate" style={{ maxWidth: 100 }}>
-                        {item.pickup_address}
-                      </td>
-                    </OverlayTrigger>
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 250, hide: 300 }}
-                      overlay={(props) =>
-                        renderTooltip(props, item.destination_address)
-                      }
-                    >
-                      <td className="text-truncate" style={{ maxWidth: 200 }}>
-                        {item.destination_address}
-                      </td>
-                    </OverlayTrigger>
+                    <td className="text-truncate" style={{ maxWidth: 100 }}>
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 250, hide: 300 }}
+                        overlay={(props) =>
+                          renderTooltip(props, item.pickup_address)
+                        }
+                      >
+                        <p>{item.pickup_address}</p>
+                      </OverlayTrigger>
+                    </td>
+                    <td className="text-truncate" style={{ maxWidth: 200 }}>
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 250, hide: 300 }}
+                        overlay={(props) =>
+                          renderTooltip(props, item.destination_address)
+                        }
+                      >
+                        <p>{item.destination_address}</p>
+                      </OverlayTrigger>
+                    </td>
                     <td>{item.supplier_name}</td>
                     <td>{item.requester_name}</td>
                     <td>{item.shipping_options}</td>
@@ -286,9 +287,7 @@ function Dashboard() {
           </Pagination>
         </div>
 
-        <footer className="text-center mt-4">
-          <p>&copy; 2025 Maka Logistic</p>
-        </footer>
+        <Footer />
       </Container>
 
       <ModalDetail

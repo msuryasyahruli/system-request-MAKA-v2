@@ -50,9 +50,9 @@ function ModalUpdate({ onShow, setShow, id, dataDetail, loading, onRefresh }) {
         }
       })
       .catch((error) => {
-        console.error("Error submitting request:", error);
+        console.error("Error updating request:", error);
         toast({
-          message: "Failed to submit request. Please try again.",
+          message: "Failed to update request. Please try again.",
           title: "Error",
         });
       });

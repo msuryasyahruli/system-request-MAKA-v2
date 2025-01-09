@@ -24,7 +24,7 @@ function ToastAlert() {
       show={show}
       delay={5000}
       autohide
-      style={{ zIndex: 1, position: "fixed", top: 10, right: 10 }}
+      style={{ zIndex: 2, position: "fixed", top: 10, right: 10 }}
     >
       <Toast.Header>
         <strong className="me-auto">{title}</strong>
