@@ -20,6 +20,9 @@ import ModalDetail from "../components/Modals/ModalDetail";
 import ModalUpdate from "../components/Modals/ModalUpdate";
 import ToastAlert, { toast } from "../components/Toast";
 import Footer from "../components/Footer";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
+
 
 function Dashboard() {
   const [dataList, setDataList] = useState([]);
@@ -117,6 +120,18 @@ function Dashboard() {
     fetchData();
   }, [selectedId]);
 
+  const fileType =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+  const fileExtension = ".xlsx";
+
+  const exportToCSV = () => {
+    const ws = XLSX.utils.json_to_sheet(dataList);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, "request-report" + fileExtension);
+  };
+
   const renderTooltip = (props, text) => (
     <Tooltip id="tooltip" {...props}>
       {text}
@@ -145,7 +160,7 @@ function Dashboard() {
             </Form.Group>
           </Col>
           <Col xs={12} sm={8} className="text-sm-end mt-3 mt-sm-0">
-            <Button variant="success">Export to Excel</Button>
+            <Button variant="success" onClick={exportToCSV}>Export to Excel</Button>
           </Col>
         </Row>
         {loading ? (
