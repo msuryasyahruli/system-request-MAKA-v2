@@ -23,6 +23,7 @@ import Footer from "../components/Footer";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 
+const API_URL = "https://maka-system-api-v1.vercel.app";
 
 function Dashboard() {
   const [dataList, setDataList] = useState([]);
@@ -50,7 +51,7 @@ function Dashboard() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `https://maka-system-api-v1.vercel.app/pickup-request`,
+          `${API_URL}/pickup-request`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -90,7 +91,7 @@ function Dashboard() {
   const handleConfirmDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `https://maka-system-api-v1.vercel.app/pickup-request/${id}`
+        `${API_URL}/pickup-request/${id}`
       );
       toast({ message: response.data.message, title: "Success" });
       setClickDelete(false);
@@ -105,7 +106,7 @@ function Dashboard() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `https://maka-system-api-v1.vercel.app/pickup-request/${selectedId}`
+          `${API_URL}/pickup-request/${selectedId}`
         );
         if (res.data.status === "success") {
           setListDetail(res.data.data[0]);

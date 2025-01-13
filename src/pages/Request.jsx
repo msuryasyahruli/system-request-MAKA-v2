@@ -22,7 +22,7 @@ function Request() {
             }}
           >
             <Card.Body>
-              <div className="text-center mb-4">
+              <div className="text-center mb-3">
                 <img
                   src={logo}
                   alt="Maka Logo"

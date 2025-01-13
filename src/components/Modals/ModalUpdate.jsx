@@ -70,7 +70,7 @@ function ModalUpdate({ onShow, setShow, id, dataDetail, loading, onRefresh }) {
               <Spinner animation="border" />
             </div>
           ) : (
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form>
               <Form.Group controlId="poNumber" className="mb-3">
                 <Form.Label>Shipment Status:</Form.Label>
                 <Form.Select
@@ -89,13 +89,14 @@ function ModalUpdate({ onShow, setShow, id, dataDetail, loading, onRefresh }) {
                   {errors.shipment_status?.message}
                 </Form.Control.Feedback>
               </Form.Group>
-
-              <Button variant="success" type="submit" className="w-100">
-                Confirm Update
-              </Button>
             </Form>
           )}
         </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleSubmit(onSubmit)}>
+            Confirm Update
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       <ToastAlert />

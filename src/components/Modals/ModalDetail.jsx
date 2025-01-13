@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 function ModalDetail({ onShow, setShow, data, loading }) {
   return (
     <>
-      <Modal size="lg" show={onShow} onHide={() => setShow(false)} centered>
+      <Modal size="lg" show={onShow} onHide={() => setShow(false)} fullscreen={'md-down'}>
         <Modal.Header closeButton>
           <Modal.Title>Detail</Modal.Title>
         </Modal.Header>
@@ -16,7 +16,7 @@ function ModalDetail({ onShow, setShow, data, loading }) {
             </div>
           ) : (
             <div
-              className="p-4 border rounded shadow-sm"
+              // className="p-4 border rounded shadow-sm"
               style={{ backgroundColor: "#fff" }}
             >
               <h2 className="text-center mb-4 fw-bold">Request</h2>
@@ -34,7 +34,7 @@ function ModalDetail({ onShow, setShow, data, loading }) {
               </div>
               <div className="row mb-2">
                 <div className="col-4 fw-semibold">Dimensi Part</div>
-                <div className="col-8">: {data.dimensi_part} (L*W*H)</div>
+                <div className="col-8">: {data.dimensi_part} (L, W, H)</div>
               </div>
               <div className="row mb-2">
                 <div className="col-4 fw-semibold">Weight</div>
